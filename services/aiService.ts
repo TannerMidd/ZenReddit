@@ -16,13 +16,23 @@ const cleanJsonString = (str: string) => {
 export const analyzePostsForZen = async (posts: RedditPostData[], config?: AIConfig): Promise<AnalysisResult[]> => {
   if (posts.length === 0) return [];
 
-  // Minimized payload
-  const postsPayload = posts.map(p => ({
-    id: p.id,
-    t: p.title, // shortened key
-    s: p.subreddit,
-    b: p.selftext ? p.selftext.substring(0, 200) : "", // shortened body
-  }));
+  // Enhanced payload with contextual signals
+  const postsPayload = posts.map(p => {
+    // Calculate engagement ratio (high ratio = controversial)
+    const engagementRatio = p.score > 0 ? (p.num_comments / p.score).toFixed(2) : '0';
+    const isLinkPost = !p.selftext && p.url && !p.url.includes('reddit.com');
+    
+    return {
+      id: p.id,
+      t: p.title, // title
+      s: p.subreddit, // subreddit
+      b: p.selftext ? p.selftext.substring(0, 200) : "", // body snippet
+      d: isLinkPost ? p.domain : null, // domain for link posts
+      f: p.link_flair_text || null, // flair
+      e: engagementRatio, // engagement ratio (comments/score)
+      lp: isLinkPost, // is link post
+    };
+  });
 
   const threshold = config?.minZenScore ?? 50;
   const customPrompt = config?.customInstructions ? 
@@ -32,6 +42,15 @@ export const analyzePostsForZen = async (posts: RedditPostData[], config?: AICon
     Task: Filter Reddit posts for a "Zen" feed.
     Filter out: Rage bait, divisive politics, aggression, anxiety-inducing content.
     ${customPrompt}
+    
+    CONTEXT SIGNALS TO CONSIDER:
+    1. **Subreddit (s)**: Hobby/creative/support subs are usually zen. News/political subs need scrutiny.
+    2. **Domain (d)**: For link posts, consider source reputation. Tabloids, hyper-partisan sites, or outrage-focused domains should lower score.
+    3. **Flair (f)**: Flairs like "Politics", "Rant", "Drama", "News" are signals. "Wholesome", "OC", "Discussion" are usually fine.
+    4. **Engagement Ratio (e)**: High ratio (>0.5) often indicates controversial/divisive content.
+    5. **Title (t)**: Clickbait phrases, ALL CAPS, excessive punctuation, accusatory language are red flags.
+    6. **Link Post (lp)**: External links to news/political sites need extra scrutiny vs self-posts.
+    
     Return JSON object with key "results" (array).
     Each item:
     - id: string

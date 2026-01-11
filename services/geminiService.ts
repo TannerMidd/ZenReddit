@@ -19,13 +19,23 @@ export const analyzePostsForZen = async (posts: RedditPostData[], config?: AICon
       return fallbackResult(posts);
   }
 
-  // Prepare a concise payload to save tokens
-  const postsPayload = posts.map(p => ({
-    id: p.id,
-    title: p.title,
-    subreddit: p.subreddit,
-    body_snippet: p.selftext ? p.selftext.substring(0, 300) : "No text", 
-  }));
+  // Enhanced payload with contextual signals for better analysis
+  const postsPayload = posts.map(p => {
+    // Calculate engagement ratio (high ratio often = controversial)
+    const engagementRatio = p.score > 0 ? (p.num_comments / p.score).toFixed(2) : '0';
+    const isLinkPost = !p.selftext && p.url && !p.url.includes('reddit.com');
+    
+    return {
+      id: p.id,
+      title: p.title,
+      subreddit: p.subreddit,
+      body_snippet: p.selftext ? p.selftext.substring(0, 300) : "No text",
+      domain: isLinkPost ? p.domain : null, // source domain for link posts
+      flair: p.link_flair_text || null, // post flair
+      engagement_ratio: engagementRatio, // comments/score ratio
+      is_link_post: isLinkPost,
+    };
+  });
 
   const threshold = config?.minZenScore ?? 50;
   // Default to a free/cheap model on OpenRouter if not specified
@@ -40,9 +50,13 @@ export const analyzePostsForZen = async (posts: RedditPostData[], config?: AICon
     
     ${customPrompt}
 
-    Context & Heuristics:
-    1. **Subreddit Reputation**: Hobby, nature, and support subs usually have high Zen scores. Controversial/political subs should be scrutinized.
-    2. **Content Tone**: Look for aggressive language or clickbait designed to provoke outrage.
+    CONTEXT SIGNALS TO ANALYZE:
+    1. **Subreddit**: Hobby, nature, creative, and support subs usually have high Zen scores. News, political, and drama subs need extra scrutiny.
+    2. **Domain**: For link posts, evaluate the source. Tabloids, hyper-partisan news (left or right), outrage-focused sites, and clickbait farms should significantly lower the score.
+    3. **Flair**: Post flairs provide important context. "Politics", "News", "Rant", "Drama" are warning signs. "Wholesome", "OC", "Question", "Discussion" are typically fine.
+    4. **Engagement Ratio**: A high comments-to-score ratio (>0.5) often indicates controversial or divisive content that sparks arguments.
+    5. **Title Analysis**: Watch for clickbait patterns, ALL CAPS, excessive punctuation (!!!, ???), accusatory/inflammatory language, or phrases designed to provoke outrage.
+    6. **Link Posts**: External links to news or political sites require more scrutiny than self-posts sharing personal experiences.
     
     Output Requirements:
     Return a JSON object with a single key "results" containing an array of objects.

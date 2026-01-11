@@ -312,13 +312,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     {/* View Mode */}
                     <div>
                         <label className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-2 block">Post Style</label>
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid grid-cols-2 gap-2">
                             <button
                                 onClick={() => setLocalViewMode('card')}
-                                className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border transition-all ${
+                                className={`flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
                                     localViewMode === 'card'
-                                        ? 'bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-800 dark:border-stone-100'
-                                        : 'bg-white dark:bg-stone-950 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800'
+                                        ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800 shadow-sm'
+                                        : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700 hover:text-stone-700 dark:hover:text-stone-300'
                                 }`}
                             >
                                 <LayoutGrid size={16} />
@@ -326,10 +326,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                             </button>
                             <button
                                 onClick={() => setLocalViewMode('compact')}
-                                className={`flex items-center justify-center gap-2 px-3 py-2 text-sm font-medium rounded-lg border transition-all ${
+                                className={`flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
                                     localViewMode === 'compact'
-                                        ? 'bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-800 dark:border-stone-100'
-                                        : 'bg-white dark:bg-stone-950 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800'
+                                        ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800 shadow-sm'
+                                        : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700 hover:text-stone-700 dark:hover:text-stone-300'
                                 }`}
                             >
                                 <List size={16} />
@@ -341,15 +341,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     {/* Page Size */}
                     <div>
                         <label className="text-xs font-medium text-stone-500 dark:text-stone-400 mb-2 block">Posts per Load</label>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-3 gap-2">
                             {[25, 50, 100].map((size) => (
                                 <button
                                     key={size}
                                     onClick={() => setLocalPageSize(size)}
-                                    className={`px-3 py-2 text-sm font-medium rounded-lg border transition-all ${
+                                    className={`px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 ${
                                         localPageSize === size
-                                            ? 'bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-800 dark:border-stone-100'
-                                            : 'bg-white dark:bg-stone-950 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800'
+                                            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800 shadow-sm'
+                                            : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700 hover:text-stone-700 dark:hover:text-stone-300'
                                     }`}
                                 >
                                     {size}
@@ -364,15 +364,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                              <Type size={14} className="text-stone-400" />
                              <label className="text-xs font-medium text-stone-500 dark:text-stone-400">Content Text Size</label>
                         </div>
-                        <div className="grid grid-cols-3 gap-3">
+                        <div className="grid grid-cols-3 gap-2">
                             {(['small', 'medium', 'large'] as const).map((size) => (
                                 <button
                                     key={size}
                                     onClick={() => setLocalTextSize(size)}
-                                    className={`px-3 py-2 text-sm font-medium rounded-lg border transition-all capitalize ${
+                                    className={`px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 capitalize ${
                                         localTextSize === size
-                                            ? 'bg-stone-800 text-white dark:bg-stone-100 dark:text-stone-900 border-stone-800 dark:border-stone-100'
-                                            : 'bg-white dark:bg-stone-950 text-stone-600 dark:text-stone-400 border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800'
+                                            ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 ring-1 ring-emerald-200 dark:ring-emerald-800 shadow-sm'
+                                            : 'bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700 hover:text-stone-700 dark:hover:text-stone-300'
                                     }`}
                                 >
                                     {size}
@@ -396,21 +396,21 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     Backup your settings and subscriptions to transfer between devices.
                 </p>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                     <button 
                         onClick={handleExport}
-                        className="flex flex-col items-center justify-center p-3 rounded-xl border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800 hover:border-emerald-500 dark:hover:border-emerald-500 transition-all group"
+                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 hover:text-emerald-700 dark:hover:text-emerald-400 transition-all duration-200 group"
                     >
-                        <Download size={20} className="text-stone-400 group-hover:text-emerald-500 mb-2 transition-colors" />
-                        <span className="text-xs font-semibold text-stone-600 dark:text-stone-300">Export Backup</span>
+                        <Download size={18} className="group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium">Export</span>
                     </button>
                     
                     <button 
                         onClick={handleImportClick}
-                        className="flex flex-col items-center justify-center p-3 rounded-xl border border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-800 hover:border-blue-500 dark:hover:border-blue-500 transition-all group"
+                        className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 dark:hover:text-blue-400 transition-all duration-200 group"
                     >
-                        <Upload size={20} className="text-stone-400 group-hover:text-blue-500 mb-2 transition-colors" />
-                        <span className="text-xs font-semibold text-stone-600 dark:text-stone-300">Import Data</span>
+                        <Upload size={18} className="group-hover:scale-110 transition-transform" />
+                        <span className="text-sm font-medium">Import</span>
                     </button>
                     <input 
                         type="file" 
@@ -573,7 +573,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         <div className="p-4 border-t border-stone-100 dark:border-stone-800 flex justify-end bg-white dark:bg-stone-900 shrink-0" style={{ paddingBottom: 'max(1rem, var(--sab))' }}>
           <button
             onClick={handleSave}
-            className="flex items-center space-x-2 bg-stone-800 dark:bg-stone-100 text-stone-100 dark:text-stone-900 px-4 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity active:scale-95"
+            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-medium shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98]"
           >
             <Save size={16} />
             <span>Save Settings</span>
