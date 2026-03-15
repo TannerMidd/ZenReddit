@@ -1,5 +1,7 @@
 # ZenReddit 🌿
 
+![Version](https://img.shields.io/badge/version-0.9.0-blue)
+
 > **⚠️ AI-GENERATED PROJECT DISCLAIMER**
 > 
 > This application was **primarily architected and coded by Artificial Intelligence** (specifically Google's Gemini models). It serves as a **proof of concept** to test the limits of current AI software engineering capabilities. While fully functional, it should be viewed as an experimental showcase of AI-assisted development.
