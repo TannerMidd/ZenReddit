@@ -1,7 +1,9 @@
 
 import { RedditPost, RedditComment, RedditMore, SortOption, TopTimeOption, SubredditAbout, RedditPostData, CommentSortOption, RedditUserAbout } from '../types';
 
-const BASE_URL = 'https://www.reddit.com';
+// www.reddit.com now shows a "confirm your account" Cloudflare challenge on some networks.
+// old.reddit.com serves identical .json endpoints and bypasses this block.
+const BASE_URL = 'https://old.reddit.com';
 const REQUEST_TIMEOUT_MS = 20000; // Increased to 20s for slower proxies
 const MAX_RETRIES = 3;
 const MAX_CONCURRENT_REQUESTS = 2; // Reduced to prevent rate limiting
@@ -188,7 +190,6 @@ const fetchWithProxy = async (url: string, options?: RequestInit, skipCache: boo
         const separator = url.includes('?') ? '&' : '?';
         const cbParam = skipCache ? `${separator}cb=${Date.now()}` : '';
         const targetUrl = provider(url + cbParam);
-        
         if (attempt > 0) {
            const backoff = 1000 * Math.pow(2, attempt) + (Math.random() * 500);
            await wait(backoff);
